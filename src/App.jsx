@@ -1,30 +1,22 @@
 // ==============================================
 // MADLIB ADVENTURE GAME
-// BLOCK TITLE + TRUE FULLSCREEN FIX
+// CENTERED LAYOUT + MOBILE SAFE MASCOT FIX
 // ==============================================
 
 import React, { useState, useEffect } from "react";
 
 export default function App() {
 
-  // ================= STEP FLOW =================
   const steps = ["welcome", "name", "animal", "state", "sport", "tool", "result"];
   const [stepIndex, setStepIndex] = useState(0);
-
-  // ================= TITLE ANIMATION STATE =================
   const [titleMinimized, setTitleMinimized] = useState(false);
-
-  // ================= MODAL STATE =================
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // ================= USER SELECTIONS =================
   const [selection, setSelection] = useState({ name:"", animal:"", state:"", sport:"", tool:"" });
 
-  // ================= MASCOT STATE =================
   const [mascotPosition, setMascotPosition] = useState(0);
   const [mascotFlip, setMascotFlip] = useState(false);
 
-  // ================= SCREEN COLORS =================
   const themes = {
     welcome:"#6C5CE7",
     name:"#00B894",
@@ -35,7 +27,6 @@ export default function App() {
     result:"#1f2a2e"
   };
 
-  // ================= OPTIONS =================
   const options = {
     name:["Captain Sparkle","Turbo Timmy","Ninja Noodle","Sir Giggles","Princess Pickles","Wiggly Wanda","Rocket Riley","Mighty Mango","Professor Pancake","Daring Daisy","Zooming Zach","Cosmic Chloe","Bouncing Benny","Shadow Sammy","Electric Ellie","Galaxy Gabe","Tornado Tessa","Blazing Bobby","Whirlwind Willow","Mega Max"],
     animal:["Flamingo","Dragon","Penguin","Llama","Gorilla","Hamster","Tiger","Elephant","Cheetah","Koala","Octopus","Falcon","Shark","Panda","Kangaroo","Alligator","Owl","Dolphin","Rhino","Fox"],
@@ -54,13 +45,11 @@ export default function App() {
     }
   },[stepIndex]);
 
-  // ================= HANDLE START =================
   const startGame = () => {
     setTitleMinimized(true);
     setStepIndex(1);
   };
 
-  // ================= HANDLE SELECTION =================
   const handleSelect = (key,value) => {
     setSelection(prev=>({...prev,[key]:value}));
     setMascotFlip(true);
@@ -85,31 +74,38 @@ export default function App() {
     <div className="app" style={{background:themes[currentStep]}}>
 
       <style>{`
-        /* TRUE FULLSCREEN FIX */
         html,body,#root{
           height:100%;
           width:100%;
           margin:0;
           padding:0;
           overflow:hidden;
-          background:${themes[currentStep]};
         }
 
         body{
-          font-family: 'Arial Black', Impact, system-ui, sans-serif;
+          font-family:'Arial Black',Impact,system-ui,sans-serif;
         }
 
         .app{
-          height:100vh;
+          height:100dvh;
           width:100vw;
-          max-width:100%;
           display:flex;
-          flex-direction:column;
           align-items:center;
           justify-content:center;
           position:relative;
           overflow:hidden;
-          color:white;
+        }
+
+        /* CENTER CONTENT WRAPPER */
+        .content{
+          width:100%;
+          max-width:1000px;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          justify-content:center;
+          text-align:center;
+          padding:20px;
         }
 
         /* NAVBAR */
@@ -123,12 +119,10 @@ export default function App() {
           align-items:center;
           justify-content:space-between;
           padding:0 20px;
-          background:rgba(0,0,0,0.2);
-          backdrop-filter:blur(6px);
+          background:rgba(0,0,0,0.25);
           z-index:10;
         }
 
-        /* BLOCK TITLE STYLE */
         .title{
           font-size:clamp(32px,6vw,48px);
           font-weight:900;
@@ -142,7 +136,6 @@ export default function App() {
           transform:translateY(-4px);
         }
 
-        /* HAMBURGER */
         .hamburger{
           width:30px;
           height:22px;
@@ -157,7 +150,6 @@ export default function App() {
           border-radius:3px;
         }
 
-        /* MODAL */
         .modalOverlay{
           position:absolute;
           inset:0;
@@ -165,10 +157,8 @@ export default function App() {
           display:flex;
           align-items:center;
           justify-content:center;
-          animation:fadeIn .3s ease;
           z-index:20;
         }
-        @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 
         .modal{
           background:white;
@@ -200,24 +190,24 @@ export default function App() {
 
         .grid{
           display:grid;
-          grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-          gap:18px;
-          width:90%;
-          max-width:900px;
-          margin-top:80px;
+          grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+          gap:16px;
+          width:100%;
+          margin-top:20px;
         }
 
+        /* MASCOT FIXED SAFE POSITION */
         .mascot{
           position:absolute;
-          bottom:20px;
+          bottom:calc(20px + env(safe-area-inset-bottom));
           left:20px;
           font-size:clamp(40px,5vw,70px);
           transition:.4s;
+          z-index:5;
         }
         .flip{transform:scaleX(-1);}        
       `}</style>
 
-      {/* NAVBAR */}
       {titleMinimized && (
         <div className="navbar">
           <div className="title minimized">MADLIB ADVENTURE</div>
@@ -227,7 +217,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL */}
       {menuOpen && (
         <div className="modalOverlay" onClick={()=>setMenuOpen(false)}>
           <div className="modal" onClick={(e)=>e.stopPropagation()}>
@@ -238,32 +227,30 @@ export default function App() {
         </div>
       )}
 
-      {/* WELCOME */}
-      {!titleMinimized && currentStep==="welcome" && (
-        <>
-          <h1 className="title">MADLIB ADVENTURE</h1>
-          <button className="legoButton" onClick={startGame}>START GAME</button>
-        </>
-      )}
+      <div className="content">
+        {!titleMinimized && currentStep==="welcome" && (
+          <>
+            <h1 className="title">MADLIB ADVENTURE</h1>
+            <button className="legoButton" onClick={startGame}>START GAME</button>
+          </>
+        )}
 
-      {/* QUESTIONS */}
-      {options[currentStep] && (
-        <div className="grid">
-          {roundOptions[currentStep]?.map(opt=> (
-            <button key={opt} className="legoButton" onClick={()=>handleSelect(currentStep,opt)}>{opt}</button>
-          ))}
-        </div>
-      )}
+        {options[currentStep] && (
+          <div className="grid">
+            {roundOptions[currentStep]?.map(opt=> (
+              <button key={opt} className="legoButton" onClick={()=>handleSelect(currentStep,opt)}>{opt}</button>
+            ))}
+          </div>
+        )}
 
-      {/* RESULT */}
-      {currentStep==="result" && (
-        <>
-          <h2>{`${selection.name} the ${selection.animal} from ${selection.state} played ${selection.sport} using a ${selection.tool}!`}</h2>
-          <button className="legoButton" onClick={restart}>PLAY AGAIN</button>
-        </>
-      )}
+        {currentStep==="result" && (
+          <>
+            <h2>{`${selection.name} the ${selection.animal} from ${selection.state} played ${selection.sport} using a ${selection.tool}!`}</h2>
+            <button className="legoButton" onClick={restart}>PLAY AGAIN</button>
+          </>
+        )}
+      </div>
 
-      {/* MASCOT */}
       <div className={`mascot ${mascotFlip?"flip":""}`} style={{left:20+mascotPosition*90}}>
         {currentStep==="result"?"🙌":"🤖"}
       </div>
