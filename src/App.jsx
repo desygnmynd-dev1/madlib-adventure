@@ -353,7 +353,7 @@ export default function App() {
       `}</style>
 
       <div className="navbar">
-        <div className="navTitle">MADLIB ADVENTURE</div>
+        <div className="navTitle">MADLIB ADVENTURES</div>
         <div className="hamburger" onClick={() => setMenuOpen(true)}>
           <span></span><span></span><span></span>
         </div>
@@ -379,7 +379,7 @@ export default function App() {
       >
         {currentStep === "welcome" && (
           <>
-            <h1 className="mainTitle">MADLIB ADVENTURE</h1>
+            <h1 className="mainTitle">MADLIB ADVENTURES</h1>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <button className="legoButton" onClick={startGame}>START GAME</button>
             </div>
