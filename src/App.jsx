@@ -319,6 +319,19 @@ export default function App() {
           }
         }
 
+        @keyframes pulseScale {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.08);
+          }
+        }
+
+        .pulseButton {
+          animation: pulseScale 1.2s ease-in-out infinite;
+        }
+
         .modalOverlay {
           position: fixed;
           inset: 0;
