@@ -228,12 +228,21 @@ export default function App() {
         }
 
         @media (max-width: 600px) {
-          .grid {
+          .selectionScreen .grid {
             grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding: 0 20px;
           }
 
-          .legoButton {
-            height: 45px !important;
+          .selectionScreen .selectionTitle {
+            line-height: 1;
+            margin-top: 24px;
+          }
+
+          .selectionScreen .grid .legoButton {
+            height: auto !important;
+            aspect-ratio: 1 / 1;
+            min-height: 120px;
           }
         }
 
@@ -294,6 +303,19 @@ export default function App() {
           display: inline-flex;
           margin: 0 6px;
           vertical-align: middle;
+        }
+
+        .pulseButton {
+          animation: pulseScale 1.2s ease-in-out infinite;
+        }
+
+        @keyframes pulseScale {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.08);
+          }
         }
 
         .mascot {
@@ -371,6 +393,7 @@ export default function App() {
       )}
 
       <div
+        className={options[currentStep] ? "selectionScreen" : ""}
         style={{
           marginTop: currentStep === "result" ? "80px" : "40px",
           textAlign: "center",
@@ -381,14 +404,14 @@ export default function App() {
           <>
             <h1 className="mainTitle">MADLIB ADVENTURE</h1>
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <button className="legoButton" onClick={startGame}>START GAME</button>
+              <button className="legoButton pulseButton" onClick={startGame}>START GAME</button>
             </div>
           </>
         )}
 
         {options[currentStep] && (
           <>
-            <h2 className="mainTitle">{stepPrompts[currentStep]}</h2>
+            <h2 className="mainTitle selectionTitle">{stepPrompts[currentStep]}</h2>
             <div className="grid">
               {roundOptions[currentStep]?.map(opt => (
                 <button
@@ -408,7 +431,7 @@ export default function App() {
             <div className="storyWrapper">{renderAdlibWithButtons(resultAdlib)}</div>
 
             <div style={{ display: "flex", justifyContent: "center", marginTop: "30px" }}>
-              <button className="legoButton" onClick={restart}>PLAY AGAIN</button>
+              <button className="legoButton pulseButton" onClick={restart}>PLAY AGAIN</button>
             </div>
             <svg className="partyHat" width="120" height="140" viewBox="0 0 120 140">
               {/* Main cone of hat */}
